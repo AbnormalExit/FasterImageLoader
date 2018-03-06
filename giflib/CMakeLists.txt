@@ -16,13 +16,14 @@ add_library( # Sets the name of the library.
              # Sets the library as a shared library.
              SHARED
              # Provides a relative path to your source file(s).
+             #src/main/cpp/gifloader1.cpp
              src/main/cpp/gifloader.cpp
-                          src/main/cpp/dgif_lib.c
-                         # src/main/cpp/egif_lib.c
-                          src/main/cpp/gif_err.c
-                          src/main/cpp/gif_hash.c
-                          src/main/cpp/quantize.c
-                          src/main/cpp/gifalloc.c
+             src/main/cpp/dgif_lib.c
+             # src/main/cpp/egif_lib.c
+             src/main/cpp/gif_err.c
+             src/main/cpp/gif_hash.c
+             src/main/cpp/quantize.c
+             src/main/cpp/gifalloc.c
               )
 
   find_library(

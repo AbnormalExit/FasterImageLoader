@@ -8,10 +8,15 @@
 
     <ImageView
         android:id="@+id/iv_pic"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
         android:src="@drawable/coffee" />
-
+    <Button
+        android:id="@+id/btn_gif"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_normal"
+        android:text="ndk load gif" />
     <Button
         android:id="@+id/btn_normal"
         android:layout_width="match_parent"

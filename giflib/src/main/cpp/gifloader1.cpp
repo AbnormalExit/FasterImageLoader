@@ -1,12 +1,31 @@
 //
 // Created by sxshi on 2018-3-6.
 //
-#include "gifloader.h"
+#include <jni.h>
+#include "gif_lib.h"
+#include <android/log.h>
+#include <assert.h>
+#include <malloc.h>
+#include <string.h>
+
+
+#define TAG "SSX_JNI"
+#define LOGI(...) __android_log_print(ANDROID_LOG_INFO, TAG, __VA_ARGS__)
+#define NELEM(x) ((int) (sizeof(x) / sizeof((x)[0])))
+#define  argb(a, r, g, b) ( ((a) & 0xff) << 24 ) | ( ((b) & 0xff) << 16 ) | ( ((g) & 0xff) << 8 ) | ((r) & 0xff)
+
+typedef struct GifBean {
+//    有多少帧
+    int total_frame;
+    //当前帧
+    int current_frame;
+//   时间集合
+    int *dealys;
+};
 
 //绘制一张图片
-extern "C"
-JNIEXPORT void JNICALL
-drawFrame(GifFileType *gifFileType, GifBean *gifBean, AndroidBitmapInfo info, void *pixels) {
+
+void drawFrame(GifFileType *gifFileType, GifBean *gifBean, AndroidBitmapInfo info, void *pixels) {
     //播放底层代码
 //        拿到当前帧
     SavedImage savedImage = gifFileType->SavedImages[gifBean->current_frame];
@@ -37,7 +56,7 @@ drawFrame(GifFileType *gifFileType, GifBean *gifBean, AndroidBitmapInfo info, vo
 
 extern "C"
 JNIEXPORT jlong JNICALL
-native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
+Java_com_sxshi_giflib_GifLoader_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
 
     LOGI("displayGif begin");
     const char *fileName = env->GetStringUTFChars(jfileName, 0);
@@ -80,7 +99,7 @@ native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
+Java_com_sxshi_giflib_GifLoader_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
                                             jobject bitmap) {
     //强转代表gif图片的结构体
     GifFileType *gifFileType = (GifFileType *) ndkGif;
@@ -111,7 +130,7 @@ native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif) {
+Java_com_sxshi_giflib_GifLoader_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif) {
     LOGI("native_getWidth begin");
     GifFileType *gifFileType = (GifFileType *) ndkGif;
     return gifFileType->SWidth;
@@ -119,7 +138,7 @@ native_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif) {
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getHeight(JNIEnv *env, jclass clzz, jlong ndkGif) {
+Java_com_sxshi_giflib_GifLoader_getHeight(JNIEnv *env, jclass clzz, jlong ndkGif) {
     LOGI("native_getHeight begin");
     GifFileType *gifFileType = (GifFileType *) ndkGif;
     return gifFileType->SHeight;
@@ -127,35 +146,35 @@ native_getHeight(JNIEnv *env, jclass clzz, jlong ndkGif) {
 
 
 
-extern "C"
-JNIEXPORT jint JNICALL
-registerNatives(JNIEnv *env, const char *className, const JNINativeMethod *methods,
-                jint nMethods) {
-    LOGI("registerNatives begin");
-    //首先找到含有本地方法的java类
-    jclass clzz = env->FindClass(className);
-    if (clzz == NULL) {
-        LOGI("clzz is NULL");
-        return JNI_FALSE;
-    }
-    if ((env->RegisterNatives(clzz, methods, nMethods)) < 0) {
-        LOGI("registerNatives fail");
-        return JNI_FALSE;
-    }
-    return JNI_TRUE;
-}
-
-JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-
-    LOGI("jni_OnLoad begin");
-    JNIEnv *env = NULL;
-
-    if ((vm->GetEnv((void **) &env, JNI_VERSION_1_4)) != JNI_OK) {
-        LOGI("jni_OnLoad fail");
-        return -1;
-    }
-    assert(env != NULL);
-    const char *className = "com/sxshi/giflib/GifLoader";
-    registerNatives(env, className, displayGifMethod, NELEM(displayGifMethod));
-    return JNI_VERSION_1_4;
-}
+//extern "C"
+//JNIEXPORT jint JNICALL
+//registerNatives(JNIEnv *env, const char *className, const JNINativeMethod *methods,
+//                jint nMethods) {
+//    LOGI("registerNatives begin");
+//    //首先找到含有本地方法的java类
+//    jclass clzz = env->FindClass(className);
+//    if (clzz == NULL) {
+//        LOGI("clzz is NULL");
+//        return JNI_FALSE;
+//    }
+//    if ((env->RegisterNatives(clzz, methods, nMethods)) < 0) {
+//        LOGI("registerNatives fail");
+//        return JNI_FALSE;
+//    }
+//    return JNI_TRUE;
+//}
+//
+//JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
+//
+//    LOGI("jni_OnLoad begin");
+//    JNIEnv *env = NULL;
+//
+//    if ((vm->GetEnv((void **) &env, JNI_VERSION_1_4)) != JNI_OK) {
+//        LOGI("jni_OnLoad fail");
+//        return -1;
+//    }
+//    assert(env != NULL);
+//    const char *className = "com/sxshi/giflib/GifLoader";
+//    registerNatives(env, className, displayGifMethod, NELEM(displayGifMethod));
+//    return JNI_VERSION_1_4;
+//}
