@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/FasterImageLoader.iml" filepath="$PROJECT_DIR$/FasterImageLoader.iml" />
+      <module fileurl="file://$PROJECT_DIR$/giflib/giflib.iml" filepath="$PROJECT_DIR$/giflib/giflib.iml" />
+      <module fileurl="file://$PROJECT_DIR$/loadingbitmap/loadingbitmap.iml" filepath="$PROJECT_DIR$/loadingbitmap/loadingbitmap.iml" />
+    </modules>
+  </component>
+</project>

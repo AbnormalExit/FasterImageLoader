@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.sxshi.android.MainActivity">
+
+    <ImageView
+        android:id="@+id/iv_pic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/coffee" />
+
+    <Button
+        android:id="@+id/btn_normal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_compress"
+        android:text="load normal pic" />
+
+    <Button
+        android:id="@+id/btn_compress"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/btn_list"
+        android:text="load compress pic" />
+
+    <Button
+        android:id="@+id/btn_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:text="images list" />
+</RelativeLayout>
