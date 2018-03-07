@@ -8,7 +8,7 @@ import android.os.Environment;
 import android.util.Log;
 
 import com.jakewharton.disklrucache.DiskLruCache;
-import com.sxshi.android.utils.BitmapDecodeUtils;
+import com.sxshi.android.utils.ImageUtils;
 import com.sxshi.android.utils.Utils;
 
 import java.io.File;
@@ -72,7 +72,7 @@ public class DiskCache implements ImageCache {
             DiskLruCache.Snapshot snapShot = mDiskLruCache.get(key);
             if (snapShot != null) {
                 InputStream is = snapShot.getInputStream(0);
-                return BitmapDecodeUtils.decodeSampleBitmapFromInputStream(is);
+                return ImageUtils.decodeSampleBitmapFromInputStream(is);
             }
         } catch (IOException e) {
             e.printStackTrace();

@@ -71,14 +71,14 @@ typedef struct GifFileType {
     GifWord SWidth, SHeight;         /* 虚拟画布的大小 */
     GifWord SColorResolution;        /* 我们可以生成多少种颜色？ */
     GifWord SBackGroundColor;        /* 虚拟画布的背景颜色 */
-    GifByteType AspectByte;	     /* 用于计算像素宽高比 */
+    GifByteType AspectByte;	         /* 用于计算像素宽高比 */
     ColorMapObject *SColorMap;       /* 全局色彩映射，如果不存在则为NULL. */
     int ImageCount;                  /* 当前图像的数量（两个API） */
     GifImageDesc Image;              /* 当前图像（低级API） */
     SavedImage *SavedImages;         /* 图像序列（高级API）*/
     int ExtensionBlockCount;         /* 计算最后一张图片的扩展名*/
     ExtensionBlock *ExtensionBlocks; /* 延伸过去的图片 */
-    int Error;			     /*报告的最后错误情况 */
+    int Error;			             /*报告的最后错误情况 */
     void *UserData;                  /* 钩附加用户数据（TVT）*/
     void *Private;                   /* 不要惹这个 */
 } GifFileType;

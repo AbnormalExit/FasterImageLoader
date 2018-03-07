@@ -7,16 +7,18 @@ import android.os.Handler;
 import android.os.Message;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.sxshi.android.utils.ImageUtils;
 import com.sxshi.giflib.GifLoader;
 
 import java.io.File;
 
 public class MainActivity extends AppCompatActivity {
-
+    private static final String TAG = "MainActivity";
     private ImageView imageView;
     private Button btn_normal, btn_btn_compress, btn_list, btn_gif;
     private GifLoader gifLoader;
@@ -26,8 +28,8 @@ public class MainActivity extends AppCompatActivity {
         public void handleMessage(Message msg) {
             int mNextFrame = gifLoader.updateFrame(bitmap);
             imageView.setImageBitmap(bitmap);
-            handler.sendEmptyMessageDelayed(1, mNextFrame);
             //无限循环
+            handler.sendEmptyMessageDelayed(1, mNextFrame);
         }
     };
 
@@ -41,16 +43,22 @@ public class MainActivity extends AppCompatActivity {
         btn_normal = findViewById(R.id.btn_normal);
         btn_btn_compress = findViewById(R.id.btn_compress);
         btn_list = findViewById(R.id.btn_list);
-
+        Log.d(TAG, "文件格式 "+ ImageUtils.getDrawableResourceType(getResources(),R.drawable.demo));
 
         btn_gif.setOnClickListener(view -> {
 
             File file = new File(Environment.getExternalStorageDirectory(), "demo.gif");
+            if (!file.exists()) {
+                Log.e(TAG, "file not found");
+                return;
+            }
+
             gifLoader = new GifLoader(file.getAbsolutePath());
             int width = gifLoader.getWidth();
             int height = gifLoader.getHeight();
             bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
             int nextFrame = gifLoader.updateFrame(bitmap);
+            imageView.setImageBitmap(bitmap);
             handler.sendEmptyMessageDelayed(1, nextFrame);
 
         });
@@ -58,14 +66,14 @@ public class MainActivity extends AppCompatActivity {
         btn_normal.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                imageView.setImageResource(R.drawable.girl);
+                imageView.setImageResource(R.drawable.demo);
             }
         });
 
         btn_btn_compress.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                ImageLoader.getInstance(MainActivity.this).loadBitmap(R.drawable.coffee, imageView);
+                ImageLoader.getInstance(MainActivity.this).loadBitmap(R.drawable.demo, imageView);
             }
         });
 

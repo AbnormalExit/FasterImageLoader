@@ -10,9 +10,9 @@ import com.sxshi.android.cache.ImageCache;
 import com.sxshi.android.cache.MemoryCache;
 import com.sxshi.android.cache.DiskCache;
 import com.sxshi.android.cache.DoubleCache;
-import com.sxshi.android.task.DownloadBitmapTask;
-import com.sxshi.android.task.LoadBigBitmapTask;
-import com.sxshi.android.utils.BitmapDecodeUtils;
+import com.sxshi.android.task.LoadImageUrlTask;
+import com.sxshi.android.task.LoadImageResourceTask;
+import com.sxshi.android.utils.ImageUtils;
 
 /**
  * Created by sxshi on 2018-2-9.
@@ -79,10 +79,10 @@ public class ImageLoader {
             imageView.setImageBitmap(bitmap);
             return;
         } else {
-            if (DownloadBitmapTask.cancelPotentialDownload(url, imageView)) {
-                DownloadBitmapTask task = new DownloadBitmapTask(imageView, mImageCache);
+            if (LoadImageUrlTask.cancelPotentialDownload(url, imageView)) {
+                LoadImageUrlTask task = new LoadImageUrlTask(imageView, mImageCache);
                 final DownLoadedDrawable downLoadedDrawable = new DownLoadedDrawable(mContext.getResources(),
-                        BitmapDecodeUtils.decodeSampledBitmapFromResource(mContext.getResources(), loadingBgResId), task);
+                        ImageUtils.decodeSampledBitmapFromResource(mContext.getResources(), loadingBgResId), task);
                 imageView.setImageDrawable(downLoadedDrawable);
                 task.execute(url);
             }
@@ -90,10 +90,10 @@ public class ImageLoader {
     }
 
     public void loadBitmap(int resId, ImageView imageView) {
-        if (LoadBigBitmapTask.cancelPotentialWork(resId, imageView)) {
-            final LoadBigBitmapTask task = new LoadBigBitmapTask(imageView, mContext.getResources());
+        if (LoadImageResourceTask.cancelPotentialWork(resId, imageView)) {
+            final LoadImageResourceTask task = new LoadImageResourceTask(imageView, mContext.getResources());
             final AsyncDrawable asyncDrawable =
-                    new AsyncDrawable(mContext.getResources(), BitmapDecodeUtils.decodeSampledBitmapFromResource(mContext.getResources(),
+                    new AsyncDrawable(mContext.getResources(), ImageUtils.decodeSampledBitmapFromResource(mContext.getResources(),
                             loadingBgResId), task);
             imageView.setImageDrawable(asyncDrawable);
             task.execute(resId);

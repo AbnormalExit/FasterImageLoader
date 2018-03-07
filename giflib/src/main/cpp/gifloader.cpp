@@ -42,10 +42,17 @@ native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
     LOGI("displayGif begin");
     const char *fileName = env->GetStringUTFChars(jfileName, 0);
     int err;
-//用系统函数打开一个gif文件   返回一个结构体，这个结构体为句柄
+    //用系统函数打开一个gif文件   返回一个结构体，这个结构体为句柄
     GifFileType *gifFileType = DGifOpenFileName(fileName, &err);
-
-    DGifSlurp(gifFileType);
+    if (err == D_GIF_ERR_OPEN_FAILED) {
+        LOGI("加载图片错误%d", err);
+        return GIF_ERROR;
+    }
+    //将图片读写入内存
+    if (DGifSlurp(gifFileType) == GIF_ERROR) {
+        LOGI("读取图片到内存失败 错误码%d", err);
+        return GIF_ERROR;
+    }
     GifBean *gifBean = (GifBean *) malloc(sizeof(GifBean));
 
 
@@ -81,7 +88,8 @@ native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
 extern "C"
 JNIEXPORT jint JNICALL
 native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
-                                            jobject bitmap) {
+                   jobject bitmap) {
+
     //强转代表gif图片的结构体
     GifFileType *gifFileType = (GifFileType *) ndkGif;
     GifBean *gifBean = (GifBean *) gifFileType->UserData;
@@ -98,6 +106,7 @@ native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
     //播放完成之后   循环到下一帧
     gifBean->current_frame += 1;
     LOGI("当前帧  %d  ", gifBean->current_frame);
+    LOGI("总共帧数  %d  ", gifBean->total_frame);
     if (gifBean->current_frame >= gifBean->total_frame - 1) {
         gifBean->current_frame = 0;
         LOGI("重新过来  %d  ", gifBean->current_frame);
@@ -146,10 +155,8 @@ registerNatives(JNIEnv *env, const char *className, const JNINativeMethod *metho
 }
 
 JNIEXPORT jint JNI_OnLoad(JavaVM *vm, void *reserved) {
-
     LOGI("jni_OnLoad begin");
     JNIEnv *env = NULL;
-
     if ((vm->GetEnv((void **) &env, JNI_VERSION_1_4)) != JNI_OK) {
         LOGI("jni_OnLoad fail");
         return -1;

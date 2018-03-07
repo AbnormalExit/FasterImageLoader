@@ -31,8 +31,6 @@ public class GifLoader {
         return updateFrame(gifFileType, bitmap);
     }
 
-    ;
-
     public static native int getWidth(long gifFileType);
 
     public static native int getHeight(long gifFileType);
