@@ -22,16 +22,6 @@ public class MainActivity extends AppCompatActivity {
     private ImageView imageView;
     private Button btn_normal, btn_btn_compress, btn_list, btn_gif;
     private GifLoader gifLoader;
-    private Bitmap bitmap;
-    private Handler handler = new Handler() {
-        @Override
-        public void handleMessage(Message msg) {
-            int mNextFrame = gifLoader.updateFrame(bitmap);
-            imageView.setImageBitmap(bitmap);
-            //无限循环
-            handler.sendEmptyMessageDelayed(1, mNextFrame);
-        }
-    };
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         btn_normal = findViewById(R.id.btn_normal);
         btn_btn_compress = findViewById(R.id.btn_compress);
         btn_list = findViewById(R.id.btn_list);
-        Log.d(TAG, "文件格式 "+ ImageUtils.getDrawableResourceType(getResources(),R.drawable.demo));
+        Log.d(TAG, "文件格式 " + ImageUtils.getDrawableResourceType(getResources(), R.drawable.demo));
 
         btn_gif.setOnClickListener(view -> {
 
@@ -52,15 +42,11 @@ public class MainActivity extends AppCompatActivity {
                 Log.e(TAG, "file not found");
                 return;
             }
-
-            gifLoader = new GifLoader(file.getAbsolutePath());
-            int width = gifLoader.getWidth();
-            int height = gifLoader.getHeight();
-            bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888);
-            int nextFrame = gifLoader.updateFrame(bitmap);
-            imageView.setImageBitmap(bitmap);
-            handler.sendEmptyMessageDelayed(1, nextFrame);
-
+            gifLoader = new GifLoader.Config()
+                    .setFilpath(file.getAbsolutePath())
+                    .into(imageView)
+                    .build();
+            gifLoader.displayGif();
         });
 
         btn_normal.setOnClickListener(new View.OnClickListener() {

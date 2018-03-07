@@ -30,20 +30,20 @@ typedef struct GifBean {
 
 extern "C"
 JNIEXPORT jlong JNICALL
-native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName);
+native_getGifFileType(JNIEnv *env, jobject instance, jstring jfileName);
 
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif);
+native_getWidth(JNIEnv *env, jobject instance, jlong ndkGif);
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getHeight(JNIEnv *env, jclass clzz, jlong ndkGif);
+native_getHeight(JNIEnv *env, jobject instance, jlong ndkGif);
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
+native_updateFrame(JNIEnv *env, jobject instance, jlong ndkGif,
                    jobject bitmap);
 
 extern "C"
@@ -58,7 +58,7 @@ registerNatives(JNIEnv *env, const char *className, const JNINativeMethod *metho
 
 static const JNINativeMethod displayGifMethod[] = {
         {
-                "displayGif",  "(Ljava/lang/String;)J",        (void *) native_displayGif
+                "getGifFileType",  "(Ljava/lang/String;)J",        (void *) native_getGifFileType
         },
         {
                 "getWidth",    "(J)I",                         (void *) native_getWidth

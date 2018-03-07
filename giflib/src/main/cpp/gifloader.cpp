@@ -37,7 +37,7 @@ drawFrame(GifFileType *gifFileType, GifBean *gifBean, AndroidBitmapInfo info, vo
 
 extern "C"
 JNIEXPORT jlong JNICALL
-native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
+native_getGifFileType(JNIEnv *env, jobject instance, jstring jfileName) {
 
     LOGI("displayGif begin");
     const char *fileName = env->GetStringUTFChars(jfileName, 0);
@@ -87,7 +87,7 @@ native_displayGif(JNIEnv *env, jclass clzz, jstring jfileName) {
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
+native_updateFrame(JNIEnv *env, jobject instance, jlong ndkGif,
                    jobject bitmap) {
 
     //强转代表gif图片的结构体
@@ -106,7 +106,6 @@ native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
     //播放完成之后   循环到下一帧
     gifBean->current_frame += 1;
     LOGI("当前帧  %d  ", gifBean->current_frame);
-    LOGI("总共帧数  %d  ", gifBean->total_frame);
     if (gifBean->current_frame >= gifBean->total_frame - 1) {
         gifBean->current_frame = 0;
         LOGI("重新过来  %d  ", gifBean->current_frame);
@@ -120,7 +119,7 @@ native_updateFrame(JNIEnv *env, jclass clzz, jlong ndkGif,
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif) {
+native_getWidth(JNIEnv *env, jobject instance, jlong ndkGif) {
     LOGI("native_getWidth begin");
     GifFileType *gifFileType = (GifFileType *) ndkGif;
     return gifFileType->SWidth;
@@ -128,7 +127,7 @@ native_getWidth(JNIEnv *env, jclass clzz, jlong ndkGif) {
 
 extern "C"
 JNIEXPORT jint JNICALL
-native_getHeight(JNIEnv *env, jclass clzz, jlong ndkGif) {
+native_getHeight(JNIEnv *env, jobject instance, jlong ndkGif) {
     LOGI("native_getHeight begin");
     GifFileType *gifFileType = (GifFileType *) ndkGif;
     return gifFileType->SHeight;
