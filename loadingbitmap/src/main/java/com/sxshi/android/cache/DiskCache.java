@@ -24,7 +24,7 @@ import static android.os.Environment.isExternalStorageRemovable;
  * Created by sxshi on 2018-2-9.
  */
 
-public class DiskCache implements ImageCache {
+public class DiskCache implements ImageCache<Bitmap>{
     private static final String TAG = "DiskCache";
     private static final String IMAGE_CACHE_DIR = "images";
 

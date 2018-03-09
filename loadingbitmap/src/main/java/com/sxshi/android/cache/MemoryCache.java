@@ -10,7 +10,7 @@ import com.sxshi.android.ImageLoader;
  * Created by sxshi on 2018-2-9.
  */
 
-public class MemoryCache implements ImageCache {
+public class MemoryCache implements ImageCache<Bitmap> {
     private static final String TAG = "MemoryCache";
     private LruCache<String, Bitmap> mMemoryCache;
 
@@ -41,9 +41,11 @@ public class MemoryCache implements ImageCache {
             mMemoryCache.put(url, bitmap);
         }
     }
+
     @Override
     public void remove(String url) {
-        if (get(url) != null)
+        if (get(url) != null) {
             mMemoryCache.remove(url);
+        }
     }
 }

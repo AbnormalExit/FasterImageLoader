@@ -32,7 +32,7 @@ public class LoadImageUrlTask extends AsyncTask<String, Void, Bitmap> {
 
     private final WeakReference<ImageView> imageViewReference;
 
-    private ImageCache mImageCache;
+    private ImageCache<Bitmap> mImageCache;
 
     public LoadImageUrlTask(ImageView imageView, ImageCache imageCache) {
         this.imageViewReference = new WeakReference<ImageView>(imageView);
@@ -110,7 +110,7 @@ public class LoadImageUrlTask extends AsyncTask<String, Void, Bitmap> {
     }
 
     /**
-     * download iname from inageUrl
+     * download imame from imageUrl
      *
      * @param imageUrl
      * @return
@@ -140,8 +140,9 @@ public class LoadImageUrlTask extends AsyncTask<String, Void, Bitmap> {
                 connection.disconnect();
             }
             try {
-                if (inputStream != null)
+                if (inputStream != null) {
                     inputStream.close();
+                }
             } catch (IOException e) {
                 e.printStackTrace();
             }

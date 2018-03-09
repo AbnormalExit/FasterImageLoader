@@ -1,15 +1,26 @@
 package com.sxshi.android.utils;
 
+import android.annotation.TargetApi;
+import android.content.ContentResolver;
+import android.content.Context;
 import android.content.res.Resources;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
 import android.text.TextUtils;
 import android.util.Log;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URI;
+import java.net.URISyntaxException;
+
+import static android.os.Environment.isExternalStorageRemovable;
 
 /**
  * Created by sxshi on 2018-2-8.
@@ -17,6 +28,7 @@ import java.io.InputStream;
 
 public class ImageUtils {
     private static final String TAG = "ImageUtils";
+    private static final String UNKNOW_IMAGE_TYPE = "unkonw image type";
 
     private ImageUtils() {
     }
@@ -182,12 +194,30 @@ public class ImageUtils {
     }
 
     /**
+     * 得到资源文件中图片的Uri
+     *
+     * @param context 上下文对象
+     * @param id      资源id
+     * @return Uri
+     */
+    public static Uri getUriFromDrawableRes(Context context, int id) {
+        Resources resources = context.getApplicationContext().getResources();
+        String path = ContentResolver.SCHEME_ANDROID_RESOURCE + "://"
+                + resources.getResourcePackageName(id) + "/"
+                + resources.getResourceTypeName(id) + "/"
+                + resources.getResourceEntryName(id);
+        Log.d(TAG, "path: " + path);
+        return Uri.parse(path);
+    }
+
+
+    /**
      * get drawable resource filetype
      *
      * @param resourceId
      * @return
      */
-    public static String getDrawableResourceType(Resources res,int resourceId) {
+    public static String getDrawableResourceType(Resources res, int resourceId) {
 
 
         final BitmapFactory.Options options = new BitmapFactory.Options();
@@ -195,7 +225,7 @@ public class ImageUtils {
         BitmapFactory.decodeResource(res, resourceId, options);
         String type = options.outMimeType;
         if (TextUtils.isEmpty(type)) {
-            type = "未能识别的图片";
+            type = UNKNOW_IMAGE_TYPE;
         } else {
             type = type.split("/")[1];
         }
@@ -215,7 +245,7 @@ public class ImageUtils {
         BitmapFactory.decodeFile(filePath, options);
         String type = options.outMimeType;//image/png”、”image/jpeg”、”image/gif”…….
         if (TextUtils.isEmpty(type)) {
-            type = "未能识别的图片";
+            type = UNKNOW_IMAGE_TYPE;
         } else {
             type = type.split("/")[1];
         }

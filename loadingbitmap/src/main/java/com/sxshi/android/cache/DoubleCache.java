@@ -8,7 +8,7 @@ import android.util.Log;
  * Created by sxshi on 2018-2-12.
  */
 
-public class DoubleCache implements ImageCache {
+public class DoubleCache implements ImageCache<Bitmap> {
     private static final String TAG = "DoubleCache";
     private DiskCache diskCache;
     private MemoryCache memoryCache;

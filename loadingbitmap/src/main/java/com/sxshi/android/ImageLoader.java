@@ -26,7 +26,7 @@ public class ImageLoader {
      */
     private int loadingBgResId = R.drawable.loding;
 
-    private ImageCache mImageCache = new MemoryCache();//默认使用内存缓存
+    private ImageCache<Bitmap> mImageCache = new MemoryCache();//默认使用内存缓存
 
     /**
      * <p>

@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.sxshi.android.utils.FileUtils;
 import com.sxshi.android.utils.ImageUtils;
 import com.sxshi.giflib.GifLoader;
 
@@ -33,7 +34,6 @@ public class MainActivity extends AppCompatActivity {
         btn_normal = findViewById(R.id.btn_normal);
         btn_btn_compress = findViewById(R.id.btn_compress);
         btn_list = findViewById(R.id.btn_list);
-        Log.d(TAG, "文件格式 " + ImageUtils.getDrawableResourceType(getResources(), R.drawable.demo));
 
         btn_gif.setOnClickListener(view -> {
 

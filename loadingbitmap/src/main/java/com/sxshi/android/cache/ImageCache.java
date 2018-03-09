@@ -6,7 +6,7 @@ import android.graphics.Bitmap;
  * Created by sxshi on 2018-2-9.
  */
 
-public interface ImageCache {
+public interface ImageCache<T> {
 
     /**
      * get bitmap from memory or disk
@@ -14,15 +14,15 @@ public interface ImageCache {
      * @param url
      * @return
      */
-    Bitmap get(String url);
+    T get(String url);
 
     /**
      * add bitmap to memory or disk
      *
      * @param url
-     * @param bitmap
+     * @param t
      */
-    void put(String url, Bitmap bitmap);
+    void put(String url, T t);
 
     /**
      * remove bitmap with key
