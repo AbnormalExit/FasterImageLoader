@@ -12,7 +12,9 @@ import com.sxshi.android.utils.ImageUtils;
 import java.lang.ref.WeakReference;
 
 /**
- * Created by sxshi on 2018-2-9.
+ *
+ * @author sxshi
+ * @date 2018-2-9
  * This task is used to load the big picture
  */
 
